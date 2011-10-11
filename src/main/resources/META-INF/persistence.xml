@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
+    <persistence-unit name="demo" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <properties>
+            <property name="hibernate.archive.autodetection" value="class"/>
+             <class>app.domain.Agriculteur</class>
+             <class>app.domain.Legume</class>
+             <class>app.domain.Prix</class>
+        </properties>
+    </persistence-unit>
+</persistence>

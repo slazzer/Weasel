@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/tx 
+                           http://www.springframework.org/schema/tx/spring-tx.xsd
+                           http://www.springframework.org/schema/context 
+                           http://www.springframework.org/schema/context/spring-context.xsd">
+                           
+<bean id="domainBus" class="org.dresign.bus.AsyncBusHandler" scope="singleton"></bean>
+<bean id="commandBus" class="org.dresign.bus.AsyncBusHandler" scope="singleton"></bean>
+<bean id="postProcessor" class="org.dresign.event.SpringDomainEventHandlerBeanProcessor" scope="singleton">
+<property name="bus" ref="domainBus"></property>
+</bean>
+<bean id="commandPostProcessor" class="org.dresign.command.SpringCommandHandlerBeanProcessor" scope="singleton">
+<property name="bus" ref="commandBus"></property>
+</bean>
+<context:component-scan base-package="test"></context:component-scan>
+<context:component-scan base-package="app.domain"></context:component-scan>
+<context:component-scan base-package="app.command"></context:component-scan>
+<context:component-scan base-package="app.infrastructure"></context:component-scan>
+<context:component-scan base-package="app.query"></context:component-scan>
+
+
+<import resource="database-context.xml"/>
+</beans>
