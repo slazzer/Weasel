@@ -26,7 +26,7 @@ public class AppTest {
 		CommandBusAccessor.bus().dispatch(command);
 		AjouterLegume event = new AjouterLegume();
 		event.nom="patate";
-	//	CommandBusAccessor.bus().dispatch(event);
+		CommandBusAccessor.bus().dispatch(event);
 		AjouterConsomateur commandz = new AjouterConsomateur();
 		commandz.name="Conso:"+System.currentTimeMillis();
 		commandz.email="email@email.com";
@@ -36,7 +36,7 @@ public class AppTest {
 		commEnVente.LegumeId=Long.parseLong("1");
 		commEnVente.prix="2";
 		CommandBusAccessor.bus().dispatch(commEnVente);
-		AgiculteurLightRepository repo = (AgiculteurLightRepository) context.getBean("agiculteurLightRepository");
+		/*AgiculteurLightRepository repo = (AgiculteurLightRepository) context.getBean("agiculteurLightRepository");
 		
 		List<AgriculteurSimpleView> liste = repo.findAll();
 		for(AgriculteurSimpleView elt: liste){
@@ -46,7 +46,7 @@ public class AppTest {
 		liste = repo.findAll();
 		for(AgriculteurSimpleView elt: liste){
 			System.out.println(elt.getDb_identifier()+"/"+elt.getNom());
-		}
+		}*/
 		
 	}
 

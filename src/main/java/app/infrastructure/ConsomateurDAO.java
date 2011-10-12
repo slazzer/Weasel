@@ -6,18 +6,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import app.domain.Consomateur;
 
 @Repository
-@Transactional
 public class ConsomateurDAO {
     @PersistenceContext
     private EntityManager entityManager;
     
-    @Transactional(propagation=Propagation.REQUIRES_NEW)
     public void add(Consomateur consomateur){
     	entityManager.persist(consomateur);
     	entityManager.flush();

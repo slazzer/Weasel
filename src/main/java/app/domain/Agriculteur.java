@@ -4,10 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import test.BusAccessor;
 import app.domain.event.MiseEnVente;
@@ -30,8 +32,8 @@ public class Agriculteur {
 		return db_identifier;
 	}
 
-	@Embedded
-	private HashMap<Legume, Prix> aLaVente =new HashMap<Legume, Prix>();;
+	@OneToMany(cascade=CascadeType.ALL)
+	private Map<Legume, Prix> aLaVente ;
 
 	@Basic
 	private String nom;
@@ -57,6 +59,7 @@ public class Agriculteur {
 			if (aLaVente == null) {
 				aLaVente = new HashMap<Legume, Prix>();
 			}
+			aLaVente = new HashMap<Legume, Prix>(aLaVente);
 			aLaVente.put(legume, prix);
 			BusAccessor.bus().dispatch(new MiseEnVente(this,legume,prix));
 		} else {

@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import org.dresign.command.CommandHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import test.BusAccessor;
 import app.domain.Agriculteur;
@@ -16,6 +17,7 @@ import app.domain.event.CreationAgriculteur;
 import app.domain.specification.PrixInvalide;
 
 @Component("AgriHandler")
+@Transactional
 public class AgriculteurCommandHandler {
 
 	@Autowired

@@ -2,10 +2,12 @@ package org.dresign.bus;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.dresign.event.DomainEvent;
+import org.springframework.context.ApplicationContext;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.util.ReflectionUtils.MethodCallback;
 
@@ -55,6 +57,7 @@ public class HandlerBeanProcessor<C extends Annotation> {
 	}
 
 	public void analyseCandidateForSubscribe() {
+		
 		List<Method> methods = findAnnotatedMethods(handlerCandidate.getClass(), annotationClazz);
 		for(Method m : methods ){
 			if(m.getParameterTypes().length!=1){

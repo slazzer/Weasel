@@ -18,6 +18,7 @@ import app.command.AjouterAgriculteur;
 import app.command.AjouterConsomateur;
 import app.command.AjouterLegume;
 import app.command.MettreEnVente;
+import app.domain.specification.PrixInvalide;
 import app.query.LightAgricultorAccessor;
 import app.query.LightLegumeAccessor;
 import app.query.beans.AgriculteurComplexeView;
@@ -54,7 +55,11 @@ if(context==null){
 			if(requested.equals(m.getName())){
 				try {
 					m.invoke(this, req,resp);
-				} catch (Exception e) {
+				}
+				catch (Throwable e) {
+					if(e.getCause().getCause().getCause() instanceof PrixInvalide){
+						out.print("<h2>Erreur le legume ne peut être mis à la vente</h2>");
+					}
 					e.printStackTrace();
 				}
 			}

@@ -3,6 +3,7 @@ package app.command;
 import org.dresign.command.CommandHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import test.BusAccessor;
 import app.domain.Consomateur;
@@ -10,6 +11,7 @@ import app.domain.ConsomateurRepository;
 import app.domain.event.CreationConsomateur;
 
 @Component("ConsoHandler")
+@Transactional
 public class ConsomateurCommandHandler {
 
 	@Autowired

@@ -2,12 +2,21 @@ package org.dresign.event;
 import org.dresign.bus.Bus;
 import org.dresign.bus.HandlerBeanProcessor;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.config.DestructionAwareBeanPostProcessor;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 
 
-public class SpringDomainEventHandlerBeanProcessor implements DestructionAwareBeanPostProcessor{
-
-
+public class SpringDomainEventHandlerBeanProcessor implements DestructionAwareBeanPostProcessor, ApplicationContextAware{
+		private ApplicationContext applicationContext;
+	@Override
+	public void setApplicationContext(ApplicationContext context)
+			throws BeansException {
+		this.applicationContext=context;
+		
+	}
 	private Bus bus;
 
 	@Override
