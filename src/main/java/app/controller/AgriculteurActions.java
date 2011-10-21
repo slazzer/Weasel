@@ -132,8 +132,7 @@ public class AgriculteurActions extends HttpServlet {
 					}else if (e.getCause() != null
 							&& e.getCause().getCause() != null
 							&& e.getCause().getCause().getCause() instanceof LegumeDejaEnVente) {
-						req.setAttribute("erreur",
-								"Le legume est déjà en vente !");
+						req.setAttribute("erreur","Le legume est deja en vente !");
 					} else {
 						e.printStackTrace();
 						req.setAttribute("erreur",

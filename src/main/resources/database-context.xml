@@ -28,8 +28,9 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+    <bean id="transactionManager" class="org.dresign.spring.AsynchronousTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory"/>
+        <property name="asyncBusHandler" ref="adomainBus"/>
     </bean>
 
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">

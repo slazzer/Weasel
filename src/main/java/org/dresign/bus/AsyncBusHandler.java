@@ -2,6 +2,7 @@ package org.dresign.bus;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -14,17 +15,7 @@ import org.dresign.event.AsyncDomainEventHandler;
 
 public class AsyncBusHandler extends BusHandler {
 
-	class Dispatcher{
-		Object event;
-		Object handler;
-		Method m;
-		public Dispatcher(Object event, Object handler, Method m) {
-			super();
-			this.event = event;
-			this.handler = handler;
-			this.m = m;
-		}
-	}
+
 	
 	private static int POOL_SIZE = 4;
 
@@ -41,8 +32,8 @@ public class AsyncBusHandler extends BusHandler {
 		threadPoolExecutor = Executors.newFixedThreadPool(poolSize);
 	}
 	
-	public void asyncDispatch(Object event, Object handler, Method m) {
-		queue.add(new Dispatcher(event,handler,m));
+	public void asyncDispatch(Dispatcher dispatcher) {
+		queue.add(dispatcher);
 		threadPoolExecutor.submit(new Runnable(){
 
 			@Override
@@ -63,7 +54,12 @@ public class AsyncBusHandler extends BusHandler {
 	protected void realDispatch(Object event, Object handler, Method m)
 			throws IllegalAccessException, InvocationTargetException {
 		if(m.getAnnotations()[0].annotationType().isAssignableFrom(AsyncDomainEventHandler.class)){
-				asyncDispatch(event,handler,m);
+			List<Dispatcher> list = elementToDispatch.get();
+			if(list==null){
+				asyncDispatch(new Dispatcher(event,handler,m));
+			}else{
+				list.add(new Dispatcher(event,handler,m));
+			}
 		}else{
 			super.realDispatch(event, handler, m);
 		}
@@ -79,6 +75,24 @@ public class AsyncBusHandler extends BusHandler {
 
 	public List<Runnable> shutDownNow(){
 		return this.threadPoolExecutor.shutdownNow();
+	}
+
+	ThreadLocal<List<Dispatcher>> elementToDispatch = new ThreadLocal<List<Dispatcher>>();
+	
+	public void endTransaction() {
+		elementToDispatch.get().clear();
+		elementToDispatch.remove();
+	}
+
+	public void startNewTransaction() {
+		elementToDispatch.set(new ArrayList<Dispatcher>());
+	}
+
+	public void performTransaction() {
+		List<Dispatcher> eventADispatcher = elementToDispatch.get();
+		for(Dispatcher element:eventADispatcher){
+			asyncDispatch(element);
+		}
 	}
 
 	

@@ -12,11 +12,15 @@
                            
 <bean id="adomainBus" class="org.dresign.bus.AsyncBusHandler" scope="singleton"></bean>
 <bean id="acommandBus" class="org.dresign.bus.AsyncBusHandler" scope="singleton"></bean>
-<bean id="postProcessor" class="org.dresign.event.SpringDomainEventHandlerBeanProcessor" scope="singleton">
+<bean id="postProcessor" class="org.dresign.spring.SpringBusHandlerBeanProcessor" scope="singleton">
 <property name="bus" ref="adomainBus"></property>
+<property name="handler" value=" org.dresign.event.DomainEventHandler"></property>
+<property name="asyncHandler" value=" org.dresign.event.AsyncDomainEventHandler"></property>
 </bean>
-<bean id="commandPostProcessor" class="org.dresign.command.SpringCommandHandlerBeanProcessor" scope="singleton">
+<bean id="commandPostProcessor" class="org.dresign.spring.SpringBusHandlerBeanProcessor" scope="singleton">
 <property name="bus" ref="acommandBus"></property>
+<property name="handler" value=" org.dresign.command.CommandHandler"></property>
+<property name="asyncHandler" value=" org.dresign.command.AsyncCommandHandler"></property>
 </bean>
 <context:component-scan base-package="app.domain"></context:component-scan>
 <context:component-scan base-package="app.domain.handler"></context:component-scan>
