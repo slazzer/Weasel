@@ -5,7 +5,7 @@ import org.dresign.event.DomainEvent;
 import app.domain.Agriculteur;
 
 @DomainEvent
-public class CreationAgriculteur {
+public class AgriculteurInscrit {
 
 	private Agriculteur agriculteur;
 
@@ -13,7 +13,7 @@ public class CreationAgriculteur {
 		return agriculteur;
 	}
 
-	public CreationAgriculteur(Agriculteur agriculteur) {
+	public AgriculteurInscrit(Agriculteur agriculteur) {
 		this.agriculteur = agriculteur;
 	}
 

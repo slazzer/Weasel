@@ -13,8 +13,8 @@ public class LegumeBeanFactory {
 
 	public List<LegumeBean> convert(List<Legume> listeDeLegume) {
 		List<LegumeBean> listedeLegumeBean = new ArrayList<LegumeBean>();
-		LegumeBean bean ;
-		for(Legume l : listeDeLegume){
+		LegumeBean bean;
+		for (Legume l : listeDeLegume) {
 			bean = convert(l);
 			listedeLegumeBean.add(bean);
 		}

@@ -9,20 +9,20 @@ import app.domain.Agriculteur;
 
 @Repository
 public class AgriculteurDAO {
-    @PersistenceContext
-    private EntityManager entityManager;
-    
-    public void add(Agriculteur agriculteur){
-    	entityManager.persist(agriculteur);
-    	entityManager.flush();
-    }
-    
-    public Agriculteur findById(Long id){
-    	return entityManager.find(Agriculteur.class, id);
-    }
+	@PersistenceContext
+	private EntityManager entityManager;
 
-    public void update(Agriculteur agriculteur) {
+	public void add(Agriculteur agriculteur) {
 		entityManager.persist(agriculteur);
-    	entityManager.flush();
+		entityManager.flush();
+	}
+
+	public Agriculteur findById(Long id) {
+		return entityManager.find(Agriculteur.class, id);
+	}
+
+	public void update(Agriculteur agriculteur) {
+		entityManager.persist(agriculteur);
+		entityManager.flush();
 	}
 }

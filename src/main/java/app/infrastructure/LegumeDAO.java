@@ -24,6 +24,7 @@ public class LegumeDAO {
 	}
 
 	public List<Legume> findAll() {
-		return entityManager.createQuery("SELECT l from Legume l").getResultList();
+		return entityManager.createQuery("SELECT l from Legume l")
+				.getResultList();
 	}
 }

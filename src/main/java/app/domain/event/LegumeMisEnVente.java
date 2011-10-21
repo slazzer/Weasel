@@ -7,7 +7,7 @@ import app.domain.Legume;
 import app.domain.Prix;
 
 @DomainEvent
-public class MiseEnVente {
+public class LegumeMisEnVente {
 
 	private Prix prix;
 	public Prix getPrix() {
@@ -25,7 +25,7 @@ public class MiseEnVente {
 	private Legume legume;
 	private Agriculteur agriculteur;
 
-	public MiseEnVente(Agriculteur agriculteur, Legume legume, Prix prix) {
+	public LegumeMisEnVente(Agriculteur agriculteur, Legume legume, Prix prix) {
 		this.agriculteur=agriculteur;
 		this.legume=legume;
 		this.prix=prix;

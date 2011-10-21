@@ -1,11 +1,11 @@
-package app.domain;
+package app.domain.handler;
 
 
 import org.dresign.event.DomainEventHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import app.domain.event.MiseEnVente;
+import app.domain.event.LegumeMisEnVente;
 import app.infrastructure.AgriculteurDAO;
 
 @Service
@@ -15,7 +15,7 @@ public class AgriculteurUpdater {
 	private AgriculteurDAO agriculteurDAO;
 	
 	@DomainEventHandler
-	public void updateTable(MiseEnVente event){
+	public void updateTable(LegumeMisEnVente event){
 		agriculteurDAO.update(event.getAgriculteur());
 	}
 }

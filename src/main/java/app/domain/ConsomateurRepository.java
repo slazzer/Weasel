@@ -9,11 +9,11 @@ import app.infrastructure.ConsomateurDAO;
 
 @Service
 public class ConsomateurRepository {
-	
+
 	@Autowired
-	private ConsomateurDAO consomateurDAO; 
-	
-	public void add(Consomateur consomateur){
+	private ConsomateurDAO consomateurDAO;
+
+	public void add(Consomateur consomateur) {
 		consomateurDAO.add(consomateur);
 	}
 

@@ -22,16 +22,15 @@ public class SpringDomainEventHandlerBeanProcessor implements DestructionAwareBe
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName)
 			throws BeansException {
-		return bean;
-	}
-
-	@Override
-	public Object postProcessBeforeInitialization(Object bean, String beanName)
-			throws BeansException {
 		HandlerBeanProcessor processor = new HandlerBeanProcessor(bus,bean,DomainEventHandler.class);
 		processor.analyseCandidateForSubscribe();
 		processor = new HandlerBeanProcessor(bus,bean,AsyncDomainEventHandler.class);
 		processor.analyseCandidateForSubscribe();
+		return bean;}
+
+	@Override
+	public Object postProcessBeforeInitialization(Object bean, String beanName)
+			throws BeansException {
 		return bean;
 	}
 

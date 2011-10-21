@@ -11,23 +11,24 @@ import app.query.beans.AgriculteurComplexeView;
 import app.query.beans.AgriculteurSimpleView;
 
 @Repository
-public class AgiculteurLightRepository {
+public class AgiculteurLightDAO {
 
-	  @PersistenceContext
-	  private EntityManager entityManager;
-	  
-	  public void add(AgriculteurSimpleView element){
-		  entityManager.persist(element);
-		  entityManager.flush();
-	  }
-	  
-	  public List<AgriculteurSimpleView>findAll(){
-		  return entityManager.createQuery("SELECT x FROM AgriculteurSimpleView x").getResultList();
-	  }
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	public void add(AgriculteurSimpleView element) {
+		entityManager.persist(element);
+		entityManager.flush();
+	}
+
+	public List<AgriculteurSimpleView> findAll() {
+		return entityManager.createQuery(
+				"SELECT x FROM AgriculteurSimpleView x").getResultList();
+	}
 
 	public void add(AgriculteurComplexeView agriculteurComplexeView) {
-		 entityManager.persist(agriculteurComplexeView);
-		  entityManager.flush();
+		entityManager.persist(agriculteurComplexeView);
+		entityManager.flush();
 	}
 
 	public AgriculteurComplexeView findComplexById(Long db_identifier) {
@@ -36,7 +37,7 @@ public class AgiculteurLightRepository {
 
 	public void update(AgriculteurComplexeView agriculteurBean) {
 		entityManager.merge(agriculteurBean);
-		  entityManager.flush();
+		entityManager.flush();
 	}
-	  
+
 }

@@ -51,6 +51,7 @@ public class AsyncBusHandler extends BusHandler {
 				try {
 					dispatcher.m.invoke(dispatcher.handler, dispatcher.event);
 				} catch (Throwable e) {
+					e.printStackTrace();
 					throw new RuntimeException(
 							"Error While dispatching event", e);
 				}

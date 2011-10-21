@@ -5,17 +5,16 @@ import java.util.Map;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import test.BusAccessor;
-import app.domain.event.MiseEnVente;
-import app.domain.specification.AALaVente;
+import app.domain.event.LegumeMisEnVente;
+import app.domain.specification.LegumeDejaEnVente;
 import app.domain.specification.PrixInvalide;
 import app.domain.specification.PrixValide;
+import app.infrastructure.bus.DomainBus;
 
 @Entity
 public class Agriculteur {
@@ -32,8 +31,8 @@ public class Agriculteur {
 		return db_identifier;
 	}
 
-	@OneToMany(cascade=CascadeType.ALL)
-	private Map<Legume, Prix> aLaVente ;
+	@OneToMany(cascade = CascadeType.ALL)
+	private Map<Legume, Prix> aLaVente;
 
 	@Basic
 	private String nom;
@@ -53,18 +52,31 @@ public class Agriculteur {
 		return aLaVente;
 	}
 
-	public void metEnVente(Legume legume, Prix prix) throws PrixInvalide {
-		if (PrixValide.isSatisfiedBy(prix)
-				&& !AALaVente.isSatisfiedBy(this, legume)) {
+	public void metEnVente(Legume legume, Prix prix) throws PrixInvalide,
+			LegumeDejaEnVente {
+		if (!PrixValide.isSatisfiedBy(prix)) {
+			throw new PrixInvalide();
+		}
+		if (!vendDeja(legume)) {
 			if (aLaVente == null) {
 				aLaVente = new HashMap<Legume, Prix>();
 			}
-			aLaVente = new HashMap<Legume, Prix>(aLaVente);
 			aLaVente.put(legume, prix);
-			BusAccessor.bus().dispatch(new MiseEnVente(this,legume,prix));
+			DomainBus.bus().dispatch(new LegumeMisEnVente(this, legume, prix));
 		} else {
-			throw new PrixInvalide();
+			throw new LegumeDejaEnVente();
 		}
+	}
+
+	public boolean vendDeja(Legume legume) {
+		if (aLaVente != null) {
+			for (Legume legumeDeLaGriculteur : aLaVente.keySet()) {
+				if (legume.getNom().equals(legumeDeLaGriculteur.getNom())) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public Agriculteur() {

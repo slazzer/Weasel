@@ -5,7 +5,7 @@ import org.dresign.event.DomainEvent;
 import app.domain.Consomateur;
 
 @DomainEvent
-public class CreationConsomateur {
+public class ConsomateurInscrit {
 
 	private Consomateur consomateur;
 
@@ -13,7 +13,7 @@ public class CreationConsomateur {
 		return consomateur;
 	}
 
-	public CreationConsomateur(Consomateur consomateur) {
+	public ConsomateurInscrit(Consomateur consomateur) {
 		this.consomateur = consomateur;
 	}
 

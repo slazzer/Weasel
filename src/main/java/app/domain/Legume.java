@@ -7,7 +7,7 @@ import javax.persistence.Id;
 
 @Entity
 public class Legume {
-	
+
 	public Long getDb_identifier() {
 		return db_identifier;
 	}
@@ -16,22 +16,22 @@ public class Legume {
 	}
 
 	@Id
-    @GeneratedValue
-    private Long db_identifier;
-	
+	@GeneratedValue
+	private Long db_identifier;
+
 	@Basic
-private String nom;
+	private String nom;
 
-public String getNom() {
-	return nom;
-}
+	public String getNom() {
+		return nom;
+	}
 
-public void setNom(String nom) {
-	this.nom = nom;
-}
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
 
-public Legume(String nom) {
-	super();
-	this.nom = nom;
-}
+	public Legume(String nom) {
+		super();
+		this.nom = nom;
+	}
 }

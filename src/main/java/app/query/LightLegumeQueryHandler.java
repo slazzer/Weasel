@@ -9,16 +9,15 @@ import app.infrastructure.LegumeDAO;
 import app.query.beans.LegumeBean;
 
 @Service("lightLegumeAccessor")
-public class LightLegumeAccessor {
+public class LightLegumeQueryHandler {
 	@Autowired
-	 private LegumeBeanFactory factory;
+	private LegumeBeanFactory factory;
 
 	@Autowired
-	 private LegumeDAO legumeDAO;
-	
-	public List<LegumeBean>findAll(){
-		 return factory.convert(legumeDAO.findAll());
-	 }
+	private LegumeDAO legumeDAO;
 
-	
+	public List<LegumeBean> findAll() {
+		return factory.convert(legumeDAO.findAll());
+	}
+
 }

@@ -9,15 +9,14 @@ import javax.persistence.Id;
 
 @Entity
 public class Prix {
-	
 
-    public Prix() {
+	public Prix() {
 	}
 
 	@Id
-    @GeneratedValue
-    private Long db_identifier;
-	
+	@GeneratedValue
+	private Long db_identifier;
+
 	public Long getDb_identifier() {
 		return db_identifier;
 	}
@@ -25,16 +24,16 @@ public class Prix {
 	@Basic
 	BigDecimal valeur;
 
-public Prix(BigDecimal valeur) {
-	super();
-	this.valeur = valeur;
-}
+	public Prix(BigDecimal valeur) {
+		super();
+		this.valeur = valeur;
+	}
 
-public BigDecimal getValeur() {
-	return valeur;
-}
+	public BigDecimal getValeur() {
+		return valeur;
+	}
 
-public void setValeur(BigDecimal valeur) {
-	this.valeur = valeur;
-}
+	public void setValeur(BigDecimal valeur) {
+		this.valeur = valeur;
+	}
 }
