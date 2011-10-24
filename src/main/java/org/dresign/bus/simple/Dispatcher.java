@@ -1,4 +1,4 @@
-package org.dresign.bus;
+package org.dresign.bus.simple;
 
 import java.lang.reflect.Method;
 

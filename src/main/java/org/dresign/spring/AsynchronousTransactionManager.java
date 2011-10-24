@@ -1,21 +1,21 @@
 package org.dresign.spring;
 
-import org.dresign.bus.AsyncBusHandler;
+import org.dresign.bus.AsyncBusTransactionalHandler;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.support.DefaultTransactionStatus;
 
 public class AsynchronousTransactionManager extends JpaTransactionManager {
 	
-	public AsyncBusHandler getAsyncBusHandler() {
+	public AsyncBusTransactionalHandler getAsyncBusHandler() {
 		return asyncBusHandler;
 	}
 
-	public void setAsyncBusHandler(AsyncBusHandler asyncBusHandler) {
+	public void setAsyncBusHandler(AsyncBusTransactionalHandler asyncBusHandler) {
 		this.asyncBusHandler = asyncBusHandler;
 	}
 
-	private AsyncBusHandler asyncBusHandler;
+	private AsyncBusTransactionalHandler asyncBusHandler;
 	
 	@Override
 	protected void doBegin(Object transaction, TransactionDefinition definition) {

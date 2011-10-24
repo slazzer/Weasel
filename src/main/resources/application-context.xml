@@ -3,15 +3,24 @@
 	xmlns="http://www.springframework.org/schema/beans" 
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:task="http://www.springframework.org/schema/task"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
                            http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/tx 
                            http://www.springframework.org/schema/tx/spring-tx.xsd
                            http://www.springframework.org/schema/context 
-                           http://www.springframework.org/schema/context/spring-context.xsd">
+                           http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/task 
+                           http://www.springframework.org/schema/task/spring-task.xsd">
                            
-<bean id="adomainBus" class="org.dresign.bus.AsyncBusHandler" scope="singleton"></bean>
-<bean id="acommandBus" class="org.dresign.bus.AsyncBusHandler" scope="singleton"></bean>
+<bean id="adomainBus" class="org.dresign.bus.redis.AsyncBusHandler" scope="singleton"></bean>
+ <task:executor id="myExecutor" pool-size="5"/>
+<task:scheduler id="myScheduler" pool-size="10"/>
+<task:scheduled-tasks scheduler="myScheduler">
+    <task:scheduled ref="redisConsumer" method="handleEvent" fixed-rate="300"/>
+</task:scheduled-tasks>
+
+<bean id="acommandBus" class="org.dresign.bus.simple.AsyncBusHandler" scope="singleton"></bean>
 <bean id="postProcessor" class="org.dresign.spring.SpringBusHandlerBeanProcessor" scope="singleton">
 <property name="bus" ref="adomainBus"></property>
 <property name="handler" value=" org.dresign.event.DomainEventHandler"></property>
@@ -22,6 +31,7 @@
 <property name="handler" value=" org.dresign.command.CommandHandler"></property>
 <property name="asyncHandler" value=" org.dresign.command.AsyncCommandHandler"></property>
 </bean>
+<context:component-scan base-package="org.dresign.bus.redis"></context:component-scan>
 <context:component-scan base-package="app.domain"></context:component-scan>
 <context:component-scan base-package="app.domain.handler"></context:component-scan>
 <context:component-scan base-package="app.command.handler"></context:component-scan>
