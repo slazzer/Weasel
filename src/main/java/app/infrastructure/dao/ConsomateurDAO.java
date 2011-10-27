@@ -1,4 +1,4 @@
-package app.infrastructure;
+package app.infrastructure.dao;
 
 import java.util.List;
 
@@ -11,6 +11,7 @@ import app.domain.Consomateur;
 
 @Repository
 public class ConsomateurDAO {
+	
 	@PersistenceContext
 	private EntityManager entityManager;
 
@@ -27,4 +28,5 @@ public class ConsomateurDAO {
 		return entityManager.createQuery("SELECT c from Consomateur c")
 				.getResultList();
 	}
+	
 }

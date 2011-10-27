@@ -1,9 +1,10 @@
-package app.domain;
+package app.domain.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import app.infrastructure.LegumeDAO;
+import app.domain.Legume;
+import app.infrastructure.dao.LegumeDAO;
 
 @Service
 public class LegumeRepository {

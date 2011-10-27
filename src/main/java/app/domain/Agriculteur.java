@@ -14,34 +14,31 @@ import app.domain.event.LegumeMisEnVente;
 import app.domain.specification.LegumeDejaEnVente;
 import app.domain.specification.PrixInvalide;
 import app.domain.specification.PrixValide;
-import app.infrastructure.bus.DomainBus;
+
+import static app.infrastructure.bus.EventBus.notifyEvent;
 
 @Entity
 public class Agriculteur {
+	
 	@Id
 	@GeneratedValue
 	private Long db_identifier;
-
-	public Agriculteur(String nom, String email) {
-		this.nom = nom;
-		this.email = email;
-	}
-
-	public Long getDb_identifier() {
-		return db_identifier;
-	}
-
+	
 	@OneToMany(cascade = CascadeType.ALL)
 	private Map<Legume, Prix> aLaVente;
 
 	@Basic
 	private String nom;
 
-	@Basic
-	private String email;
+	public Agriculteur() {
+	}
+	
+	public Agriculteur(String nom) {
+		this.nom = nom;
+	}
 
-	public String getEmail() {
-		return email;
+	public Long getDb_identifier() {
+		return db_identifier;
 	}
 
 	public String getNom() {
@@ -54,18 +51,14 @@ public class Agriculteur {
 
 	public void metEnVente(Legume legume, Prix prix) throws PrixInvalide,
 			LegumeDejaEnVente {
-		if (!PrixValide.isSatisfiedBy(prix)) {
-			throw new PrixInvalide();
+		checkMiseEnVenteValide(legume, prix);
+
+		if (aLaVente == null) {
+			aLaVente = new HashMap<Legume, Prix>();
 		}
-		if (!vendDeja(legume)) {
-			if (aLaVente == null) {
-				aLaVente = new HashMap<Legume, Prix>();
-			}
-			aLaVente.put(legume, prix);
-			DomainBus.bus().dispatch(new LegumeMisEnVente(this, legume, prix));
-		} else {
-			throw new LegumeDejaEnVente();
-		}
+		aLaVente.put(legume, prix);
+		
+		notifyEvent(new LegumeMisEnVente(this, legume, prix));
 	}
 
 	public boolean vendDeja(Legume legume) {
@@ -79,6 +72,14 @@ public class Agriculteur {
 		return false;
 	}
 
-	public Agriculteur() {
+	private void checkMiseEnVenteValide(Legume legume, Prix prix)
+			throws PrixInvalide, LegumeDejaEnVente {
+		if (!PrixValide.isSatisfiedBy(prix)) {
+			throw new PrixInvalide();
+		}
+		if (vendDeja(legume)) {
+			throw new LegumeDejaEnVente();
+		}
 	}
+
 }

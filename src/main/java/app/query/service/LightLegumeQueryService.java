@@ -1,22 +1,23 @@
-package app.query;
+package app.query.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import app.infrastructure.LegumeDAO;
-import app.query.beans.LegumeBean;
+import app.infrastructure.dao.LegumeDAO;
+import app.query.view.LegumeView;
 
-@Service("lightLegumeAccessor")
-public class LightLegumeQueryHandler {
+@Service
+public class LightLegumeQueryService {
+
 	@Autowired
-	private LegumeBeanFactory factory;
+	private LegumeViewFactory factory;
 
 	@Autowired
 	private LegumeDAO legumeDAO;
 
-	public List<LegumeBean> findAll() {
+	public List<LegumeView> findAll() {
 		return factory.convert(legumeDAO.findAll());
 	}
 

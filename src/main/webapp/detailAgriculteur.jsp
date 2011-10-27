@@ -22,11 +22,11 @@
 <H3 class="titre">L'agriculteur ${detailAgriculteur.nom}</H3>
 <div class="info">
 <c:choose>
-<c:when test="${detailAgriculteur.listeDeLegumeALaVente ==null}">
+<c:when test="${detailAgriculteur.legumesALaVente ==null}">
 Ne vend aucun legume
 </c:when>
 <c:otherwise>
-Vend les légumes : ${detailAgriculteur.listeDeLegumeALaVente}
+Vend les légumes : ${detailAgriculteur.legumesALaVente}
  </c:otherwise>		
 </c:choose>
 </div>

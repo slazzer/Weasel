@@ -35,7 +35,7 @@ ul a{
 </style>
 </HEAD>
 <BODY>
-<H3>Veggie World...</H3><a href="listAgriculteur" >refresh</a>
+<H3>Veggie World...</H3><a href="listAgriculteurs" >refresh</a>
 <c:if test="${message != null}">
 <h1 class="info">${message}</h1>
 </c:if>

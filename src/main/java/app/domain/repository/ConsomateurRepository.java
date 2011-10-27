@@ -1,11 +1,12 @@
-package app.domain;
+package app.domain.repository;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import app.infrastructure.ConsomateurDAO;
+import app.domain.Consomateur;
+import app.infrastructure.dao.ConsomateurDAO;
 
 @Service
 public class ConsomateurRepository {

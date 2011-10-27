@@ -11,14 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 import app.command.InscrireAgriculteur;
 import app.command.MettreEnVenteLegume;
 import app.domain.Agriculteur;
-import app.domain.AgriculteurRepository;
 import app.domain.Legume;
-import app.domain.LegumeRepository;
 import app.domain.Prix;
 import app.domain.event.AgriculteurInscrit;
+import app.domain.repository.AgriculteurRepository;
+import app.domain.repository.LegumeRepository;
 import app.domain.specification.LegumeDejaEnVente;
 import app.domain.specification.PrixInvalide;
-import app.infrastructure.bus.DomainBus;
+import app.infrastructure.bus.EventBus;
 
 @Component("AgriHandler")
 @Transactional
@@ -32,9 +32,9 @@ public class AgriculteurCommandHandler {
 	
 	@CommandHandler
 	public void handleInscrire(InscrireAgriculteur command){
-		Agriculteur agriculteur = new Agriculteur(command.nom,command.email);
+		Agriculteur agriculteur = new Agriculteur(command.nom);
 		repository.add(agriculteur);
-		DomainBus.bus().dispatch(new AgriculteurInscrit(agriculteur));
+		EventBus.bus().dispatch(new AgriculteurInscrit(agriculteur));
 	}
 	
 	@CommandHandler

@@ -7,11 +7,10 @@ import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CommandBus implements BeanFactoryAware {
-
-	private static Bus bus;
-
+public class EventBus implements BeanFactoryAware {
+	
 	private static BeanFactory beanFactory;
+	private static Bus bus;
 
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
@@ -20,9 +19,13 @@ public class CommandBus implements BeanFactoryAware {
 
 	public static Bus bus() {
 		if (bus == null && beanFactory != null) {
-			bus = (Bus) beanFactory.getBean("veggieCommandBus");
+			bus = (Bus) beanFactory.getBean("veggieEventBus");
 		}
 		return bus;
+	}
+	
+	public static void notifyEvent(Object event) {
+		bus().dispatch(event);
 	}
 
 }

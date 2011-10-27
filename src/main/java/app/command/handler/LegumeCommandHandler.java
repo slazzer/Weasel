@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import app.command.AjouterLegume;
 import app.domain.Legume;
-import app.domain.LegumeRepository;
+import app.domain.repository.LegumeRepository;
 
 @Component("LegumeHandler")
 @Transactional

@@ -12,33 +12,40 @@
                            http://www.springframework.org/schema/context/spring-context.xsd
                            http://www.springframework.org/schema/task 
                            http://www.springframework.org/schema/task/spring-task.xsd">
-                           
-<bean id="adomainBus" class="org.dresign.bus.redis.AsyncBusHandler" scope="singleton"></bean>
- <task:executor id="myExecutor" pool-size="5"/>
-<task:scheduler id="myScheduler" pool-size="10"/>
-<task:scheduled-tasks scheduler="myScheduler">
-    <task:scheduled ref="redisConsumer" method="handleEvent" fixed-rate="300"/>
-</task:scheduled-tasks>
-
-<bean id="acommandBus" class="org.dresign.bus.simple.AsyncBusHandler" scope="singleton"></bean>
-<bean id="postProcessor" class="org.dresign.spring.SpringBusHandlerBeanProcessor" scope="singleton">
-<property name="bus" ref="adomainBus"></property>
-<property name="handler" value=" org.dresign.event.DomainEventHandler"></property>
-<property name="asyncHandler" value=" org.dresign.event.AsyncDomainEventHandler"></property>
-</bean>
-<bean id="commandPostProcessor" class="org.dresign.spring.SpringBusHandlerBeanProcessor" scope="singleton">
-<property name="bus" ref="acommandBus"></property>
-<property name="handler" value=" org.dresign.command.CommandHandler"></property>
-<property name="asyncHandler" value=" org.dresign.command.AsyncCommandHandler"></property>
-</bean>
-<context:component-scan base-package="org.dresign.bus.redis"></context:component-scan>
-<context:component-scan base-package="app.domain"></context:component-scan>
-<context:component-scan base-package="app.domain.handler"></context:component-scan>
-<context:component-scan base-package="app.command.handler"></context:component-scan>
-<context:component-scan base-package="app.infrastructure"></context:component-scan>
-<context:component-scan base-package="app.infrastructure.bus"></context:component-scan>
-<context:component-scan base-package="app.query"></context:component-scan>
-
-
-<import resource="database-context.xml"/>
+                     
+	<bean id="veggieCommandBus" class="org.dresign.bus.simple.AsyncBusHandler" scope="singleton"></bean>
+	
+	<bean id="commandPostProcessor" class="org.dresign.spring.SpringBusHandlerBeanProcessor" scope="singleton">
+		<property name="bus" ref="veggieCommandBus"></property>
+		<property name="handler" value=" org.dresign.command.CommandHandler"></property>
+		<property name="asyncHandler" value=" org.dresign.command.AsyncCommandHandler"></property>
+	</bean>
+	      
+	<bean id="veggieEventBus" class="org.dresign.bus.redis.AsyncBusHandler" scope="singleton"></bean>
+	
+	<bean id="postProcessor" class="org.dresign.spring.SpringBusHandlerBeanProcessor" scope="singleton">
+		<property name="bus" ref="veggieEventBus"></property>
+		<property name="handler" value=" org.dresign.event.DomainEventHandler"></property>
+		<property name="asyncHandler" value=" org.dresign.event.AsyncDomainEventHandler"></property>
+	</bean>
+	
+	<task:executor id="myExecutor" pool-size="5"/>
+	
+	<task:scheduler id="myScheduler" pool-size="10"/>
+	
+	<task:scheduled-tasks scheduler="myScheduler">
+	    <task:scheduled ref="redisConsumer" method="handleEvent" fixed-rate="300"/>
+	</task:scheduled-tasks>
+	
+	<context:component-scan base-package="org.dresign.bus.redis"></context:component-scan>
+	<context:component-scan base-package="app.domain"></context:component-scan>
+	<context:component-scan base-package="app.domain.handler"></context:component-scan>
+	<context:component-scan base-package="app.command.handler"></context:component-scan>
+	<context:component-scan base-package="app.infrastructure"></context:component-scan>
+	<context:component-scan base-package="app.infrastructure.bus"></context:component-scan>
+	<context:component-scan base-package="app.infrastructure.dao"></context:component-scan>
+	<context:component-scan base-package="app.query"></context:component-scan>
+	
+	<import resource="database-context.xml"/>
+	
 </beans>

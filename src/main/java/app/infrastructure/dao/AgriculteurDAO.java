@@ -1,4 +1,4 @@
-package app.infrastructure;
+package app.infrastructure.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

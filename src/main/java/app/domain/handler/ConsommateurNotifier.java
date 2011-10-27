@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import app.domain.Consomateur;
-import app.domain.ConsomateurRepository;
 import app.domain.event.LegumeMisEnVente;
+import app.domain.repository.ConsomateurRepository;
 import app.infrastructure.Mailer;
 
 @Service

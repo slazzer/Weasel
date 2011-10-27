@@ -1,4 +1,4 @@
-package app.infrastructure;
+package app.infrastructure.dao;
 
 import java.util.List;
 
@@ -7,11 +7,11 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
 
-import app.query.beans.AgriculteurComplexeView;
-import app.query.beans.AgriculteurSimpleView;
+import app.query.view.AgriculteurComplexeView;
+import app.query.view.AgriculteurSimpleView;
 
 @Repository
-public class AgiculteurLightDAO {
+public class AgiculteurReadDAO {
 
 	@PersistenceContext
 	private EntityManager entityManager;

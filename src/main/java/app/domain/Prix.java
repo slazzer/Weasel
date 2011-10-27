@@ -33,7 +33,4 @@ public class Prix {
 		return valeur;
 	}
 
-	public void setValeur(BigDecimal valeur) {
-		this.valeur = valeur;
-	}
 }

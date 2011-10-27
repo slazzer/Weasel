@@ -13,101 +13,116 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import app.command.InscrireAgriculteur;
 import app.command.AjouterConsomateur;
 import app.command.AjouterLegume;
+import app.command.InscrireAgriculteur;
 import app.command.MettreEnVenteLegume;
 import app.domain.specification.LegumeDejaEnVente;
 import app.domain.specification.PrixInvalide;
 import app.infrastructure.bus.CommandBus;
-import app.query.LightAgriculteurQueryHandler;
-import app.query.LightLegumeQueryHandler;
-import app.query.beans.AgriculteurComplexeView;
-import app.query.beans.AgriculteurSimpleView;
-import app.query.beans.LegumeBean;
+import app.query.service.LightAgriculteurQueryService;
+import app.query.service.LightLegumeQueryService;
+import app.query.view.AgriculteurComplexeView;
+import app.query.view.AgriculteurSimpleView;
+import app.query.view.LegumeView;
 
 public class AgriculteurActions extends HttpServlet {
 
-	private void listAgriculteur(HttpServletRequest req,
+	private static final long serialVersionUID = -8472175542644820655L;
+
+	WebApplicationContext context = null;
+
+	private void listAgriculteurs(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
-		LightAgriculteurQueryHandler agriculteurAccessor = (LightAgriculteurQueryHandler) context
-				.getBean("lightAgricultorAccessor");
-		List<AgriculteurSimpleView> liste = agriculteurAccessor.findAll();
-		req.setAttribute("listeDAgriculteur", liste);
-		LightLegumeQueryHandler legumeAccessor = (LightLegumeQueryHandler) context
-				.getBean("lightLegumeAccessor");
-		List<LegumeBean> list = legumeAccessor.findAll();
-		req.setAttribute("listeDeLegume", list);
+		LightAgriculteurQueryService agriculteurQueryService = (LightAgriculteurQueryService) context
+				.getBean(LightAgriculteurQueryService.class);
+		List<AgriculteurSimpleView> agriculteurSimpleViews = agriculteurQueryService
+				.findAll();
+		req.setAttribute("listeDAgriculteur", agriculteurSimpleViews);
+
+		LightLegumeQueryService legumeQueryService = (LightLegumeQueryService) context
+				.getBean(LightLegumeQueryService.class);
+		List<LegumeView> legumesViews = legumeQueryService.findAll();
+		req.setAttribute("listeDeLegume", legumesViews);
+
 		forwardToJsp(req, resp, "listeAgriculteur.jsp");
 	}
 
+	@SuppressWarnings("unused")
 	private void showDetail(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		LightAgriculteurQueryHandler accessor = (LightAgriculteurQueryHandler) context
-				.getBean("lightAgricultorAccessor");
-		AgriculteurComplexeView detail = accessor.findDetail(req
+		LightAgriculteurQueryService queryService = (LightAgriculteurQueryService) context
+				.getBean(LightAgriculteurQueryService.class);
+		AgriculteurComplexeView detail = queryService.findDetail(req
 				.getParameter("id"));
 		req.setAttribute("detailAgriculteur", detail);
-		forwardToJsp(req, resp, "detailAgriculteur.jsp");
 
+		forwardToJsp(req, resp, "detailAgriculteur.jsp");
 	}
 
+	@SuppressWarnings("unused")
 	private void addAgriculteur(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String nom = req.getParameter("nom");
 		String mail = req.getParameter("mail");
+
 		InscrireAgriculteur command = new InscrireAgriculteur();
 		command.nom = nom;
 		command.email = mail;
 		CommandBus.bus().dispatch(command);
+
 		req.setAttribute("message",
 				"C'est bon j'ai pris en compte l'ajout de l'agriculteur " + nom
 						+ " a l'adresse " + mail);
-		listAgriculteur(req, resp);
+		listAgriculteurs(req, resp);
 	}
 
+	@SuppressWarnings("unused")
 	private void addConsommateur(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
 		String nom = req.getParameter("nom");
 		String mail = req.getParameter("mail");
-		AjouterConsomateur command = new AjouterConsomateur();
-		command.nom = nom;
-		command.email = mail;
+
+		AjouterConsomateur command = new AjouterConsomateur(nom, mail);
 		CommandBus.bus().dispatch(command);
+
 		req.setAttribute("message",
 				"C'est bon j'ai pris en compte l'ajout du consommateur " + nom
 						+ " a l'adresse " + mail);
-		listAgriculteur(req, resp);
+
+		listAgriculteurs(req, resp);
 	}
 
+	@SuppressWarnings("unused")
 	private void addLegume(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String nom = req.getParameter("nom");
-		AjouterLegume command = new AjouterLegume();
-		command.nom = nom;
+
+		AjouterLegume command = new AjouterLegume(nom);
 		CommandBus.bus().dispatch(command);
+
 		req.setAttribute("message", "C'est bon j'ai pris en compte l'ajout de "
 				+ nom);
-		listAgriculteur(req, resp);
+
+		listAgriculteurs(req, resp);
 	}
 
+	@SuppressWarnings("unused")
 	private void addLegumeEnVente(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
-		String agriId = req.getParameter("agriculteurId");
-		String legId = req.getParameter("legumeId");
+		Long agriculteurId = Long.parseLong(req.getParameter("agriculteurId"));
+		Long legumeId = Long.parseLong(req.getParameter("legumeId"));
 		String prix = req.getParameter("prix");
-		MettreEnVenteLegume command = new MettreEnVenteLegume();
-		command.agriculteurId = Long.parseLong(agriId);
-		command.legumeId = Long.parseLong(legId);
-		command.prix = prix;
+
+		MettreEnVenteLegume command = new MettreEnVenteLegume(agriculteurId,
+				legumeId, prix);
 		CommandBus.bus().dispatch(command);
+
 		req.setAttribute(
 				"message",
 				"C'est bon c'est pris en compte je l'ai mis en vente et sur la console on voit les mails qui defillent");
-		listAgriculteur(req, resp);
+		listAgriculteurs(req, resp);
 	}
-
-	WebApplicationContext context = null;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -120,6 +135,7 @@ public class AgriculteurActions extends HttpServlet {
 		String requested = req.getRequestURI().replace("/ddd/action/", "");
 		Method[] methods = this.getClass().getDeclaredMethods();
 		for (Method m : methods) {
+
 			if (requested.equals(m.getName())) {
 				try {
 					m.invoke(this, req, resp);
@@ -129,16 +145,17 @@ public class AgriculteurActions extends HttpServlet {
 							&& e.getCause().getCause().getCause() instanceof PrixInvalide) {
 						req.setAttribute("erreur",
 								"Le Prix de mise en vente est invalide !");
-					}else if (e.getCause() != null
+					} else if (e.getCause() != null
 							&& e.getCause().getCause() != null
 							&& e.getCause().getCause().getCause() instanceof LegumeDejaEnVente) {
-						req.setAttribute("erreur","Le legume est deja en vente !");
+						req.setAttribute("erreur",
+								"Le legume est deja en vente !");
 					} else {
 						e.printStackTrace();
 						req.setAttribute("erreur",
 								"Une erreur est survenue !!! et je ne sais pas en dire plus");
 					}
-					listAgriculteur(req, resp);
+					listAgriculteurs(req, resp);
 				}
 			}
 		}
