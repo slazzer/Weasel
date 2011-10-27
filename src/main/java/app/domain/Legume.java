@@ -8,13 +8,6 @@ import javax.persistence.Id;
 @Entity
 public class Legume {
 
-	public Long getDb_identifier() {
-		return db_identifier;
-	}
-
-	public Legume() {
-	}
-
 	@Id
 	@GeneratedValue
 	private Long db_identifier;
@@ -22,16 +15,20 @@ public class Legume {
 	@Basic
 	private String nom;
 
-	public String getNom() {
-		return nom;
+	public Legume() {
 	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
+	public Long getDb_identifier() {
+		return db_identifier;
 	}
 
 	public Legume(String nom) {
 		super();
 		this.nom = nom;
 	}
+
+	public String getNom() {
+		return nom;
+	}
+
 }

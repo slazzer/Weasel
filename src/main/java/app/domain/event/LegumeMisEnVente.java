@@ -9,7 +9,16 @@ import app.domain.Prix;
 @DomainEvent
 public class LegumeMisEnVente {
 
+	private Legume legume;
+	private Agriculteur agriculteur;
 	private Prix prix;
+
+	public LegumeMisEnVente(Agriculteur agriculteur, Legume legume, Prix prix) {
+		this.agriculteur=agriculteur;
+		this.legume=legume;
+		this.prix=prix;
+	}
+	
 	public Prix getPrix() {
 		return prix;
 	}
@@ -20,15 +29,6 @@ public class LegumeMisEnVente {
 
 	public Agriculteur getAgriculteur() {
 		return agriculteur;
-	}
-
-	private Legume legume;
-	private Agriculteur agriculteur;
-
-	public LegumeMisEnVente(Agriculteur agriculteur, Legume legume, Prix prix) {
-		this.agriculteur=agriculteur;
-		this.legume=legume;
-		this.prix=prix;
 	}
 
 }

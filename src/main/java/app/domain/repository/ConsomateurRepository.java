@@ -21,4 +21,5 @@ public class ConsomateurRepository {
 	public List<Consomateur> getAll() {
 		return consomateurDAO.findAll();
 	}
+	
 }
